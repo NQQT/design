@@ -1,24 +1,51 @@
 import { RendererType } from './Renderer.types';
-import React from 'react';
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import React, { useState } from 'react';
+import { objectObserve } from '@library/presource';
+import { materialUIComponentList } from '../../configs/list';
 
-const componentList = {
-  ToggleButtonGroup,
-  ToggleButton,
-};
+const componentList = materialUIComponentList;
 
 /**
  * This component job is to simply render which every component in the json tree using component listing
  * */
-export const Renderer: React.FC<RendererType> = ({ id, style, props, nested }) => {
-  const Component = componentList[id];
+export const Renderer: React.FC<RendererType> = ({ id, style, props, nested, onSelected }) => {
+  // Extracting the component from the component listing
+  const { component: Component, properties: options } = componentList[id];
 
-  const properties: any = { ...props };
+  const refresh = useState({})[1];
+
+  console.log(props);
+  // The reactive properties
+  const reactiveProperties = objectObserve(props, ({ method }) => {
+    if (method === 'set') {
+      console.log('setting new values');
+      refresh({});
+    }
+  });
+
+  const additionalProps: any = {};
   if (nested) {
-    properties.children = nested.map((nestedProps, index) => {
+    // Adding additional props
+    additionalProps.children = nested.map((nestedProps, index) => {
       return <Renderer key={index} {...nestedProps} />;
     });
   }
 
-  return <Component {...properties} />;
+  return (
+    <>
+      <Component
+        {...reactiveProperties}
+        {...additionalProps}
+        onMouseOver={() => {
+          if (onSelected) {
+            onSelected({
+              // ON Selected triggers
+              properties: reactiveProperties,
+              options,
+            });
+          }
+        }}
+      />
+    </>
+  );
 };

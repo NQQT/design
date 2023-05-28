@@ -1,5 +1,5 @@
 import { PropertyEditorTypes } from './PropertyEditor.types';
-import React from 'react';
+import React, { useState } from 'react';
 import { objectEach, objectHasKey, stringSwitch } from '@library/presource';
 import { FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Switch, TextField } from '@mui/material';
 import { ComponentListOptionsPropertyType } from '../../../configs/list/types';
@@ -30,9 +30,9 @@ export const PropertyEditor: React.FC<PropertyEditorTypes> = ({ properties, opti
 
   return (
     <Grid container spacing={2}>
-      {editors.map((Component, index) => (
-        <Grid item xs={12}>
-          <Component key={index} />
+      {editors.map((editor, index) => (
+        <Grid key={index} item xs={12}>
+          {editor}
         </Grid>
       ))}
     </Grid>
@@ -44,7 +44,7 @@ const renderSwitchPropertyEditor = (
   option: ComponentListOptionsPropertyType,
   properties: RendererPropertyType,
 ) => {
-  return () => (
+  return (
     <FormControl fullWidth>
       <FormControlLabel control={<Switch defaultChecked />} label={label} />
     </FormControl>
@@ -52,26 +52,23 @@ const renderSwitchPropertyEditor = (
 };
 
 const renderInputPropertyEditor = (
-  label: string,
+  key: string,
   propertyConfig: ComponentListOptionsPropertyType,
   properties: RendererPropertyType,
 ) => {
-  return () => {
-    // Extracting out the value from the property list
-    const value = properties[label];
-    return (
-      <TextField
-        label={label}
-        variant={'outlined'}
-        fullWidth
-        value={value}
-        onChange={({ target: { defaultValue } }) => {
-          // Updating reactive property
-          properties[label] = defaultValue;
-        }}
-      />
-    );
-  };
+  return (
+    <TextField
+      key={key}
+      label={key}
+      variant={'outlined'}
+      fullWidth
+      value={properties[key]}
+      onChange={({ target: { value } }) => {
+        // Updating reactive property
+        properties[key] = value;
+      }}
+    />
+  );
 };
 
 const renderSelectPropertyEditor = (
@@ -79,25 +76,27 @@ const renderSelectPropertyEditor = (
   propertyConfig: ComponentListOptionsPropertyType,
   properties: RendererPropertyType,
 ) => {
-  return () => {
-    const { options } = propertyConfig;
-    const defaultValue = properties[key];
-    return (
-      <FormControl fullWidth>
-        <InputLabel>{key}</InputLabel>
-        <Select
-          label={key}
-          defaultValue={defaultValue}
-          onChange={({ target: { value } }) => {
-            // Property is a reactive data, so changing will cause re-rendering
-            properties[key] = value;
-          }}
-        >
-          {options.map((option) => (
-            <MenuItem value={option.toString()}>{option}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    );
-  };
+  const { options } = propertyConfig;
+  // So that itself also get updated
+  const [currentValue, setNewValue] = useState<string>(properties[key]);
+  return (
+    <FormControl fullWidth>
+      <InputLabel>{key}</InputLabel>
+      <Select
+        label={key}
+        value={currentValue as any}
+        onChange={({ target: { value } }) => {
+          // Property is a reactive data, so changing will cause re-rendering
+          properties[key] = value;
+          setNewValue(value);
+        }}
+      >
+        {options.map((option, index) => (
+          <MenuItem key={index} value={option.toString()}>
+            {option}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
 };
