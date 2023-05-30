@@ -11,7 +11,7 @@ export const Renderer = layoutRenderer({
   },
   on: {
     edit: () => {
-      // Do nothing for now
+      console.log('hello');
     },
   },
 });
