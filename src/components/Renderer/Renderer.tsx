@@ -1,6 +1,5 @@
 import React from 'react';
-import { materialUIComponentList } from '../../configs/list';
-import { layoutRenderer } from 'assets';
+import { layoutRenderer, rendererPresetMaterialUIComponents } from 'assets';
 
 /**
  * This component job is to simply renderer which every component in the json tree using component listing
@@ -8,7 +7,7 @@ import { layoutRenderer } from 'assets';
 
 export const Renderer = layoutRenderer({
   component: {
-    list: materialUIComponentList,
+    list: rendererPresetMaterialUIComponents,
   },
   on: {
     edit: () => {
