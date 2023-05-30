@@ -1,8 +1,7 @@
 import { storybookSetupTemplate } from '@library/storybook';
 import React, { useState } from 'react';
-import { PropertyEditor as PropertyEditorComponent } from './PropertyEditor';
-import { ComponentListOptionsPropertyType } from '../../../configs/list/types';
 import { objectObserve } from '@library/presource';
+import { RendererEditorProperty, TypeLayoutRendererComponentListProperties } from 'assets';
 
 const template = storybookSetupTemplate((args) => {
   return <TemplateComponent />;
@@ -12,16 +11,17 @@ const properties = {
   label: 'hello',
   variant: 'secondary',
 };
+
 const TemplateComponent = React.memo(() => {
   const refresh = useState({})[1];
-  const reactiveProperties = objectObserve(properties, ({ method }) => {
+  const props = objectObserve(properties, ({ method }) => {
     if (method === 'set') {
       console.log(properties);
       refresh({});
     }
   });
 
-  const options: { [key: string]: ComponentListOptionsPropertyType } = {
+  const configs: TypeLayoutRendererComponentListProperties = {
     label: {
       type: 'input',
       options: [],
@@ -31,7 +31,7 @@ const TemplateComponent = React.memo(() => {
       options: ['primary', 'secondary', 'tertiary'],
     },
   };
-  return <PropertyEditorComponent properties={reactiveProperties} options={options} />;
+  return <RendererEditorProperty props={props} configs={configs} />;
 });
 
 export const PropertyEditor = template();

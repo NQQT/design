@@ -1,8 +1,7 @@
 import { Button, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { ComponentListType } from './types';
-import { booleanOptions, selectOptions } from './options';
+import { TypeLayoutRendererComponentList } from 'assets';
 
-export const materialUIComponentList: ComponentListType = {
+export const materialUIComponentList: TypeLayoutRendererComponentList = {
   Button: {
     component: Button,
     properties: {

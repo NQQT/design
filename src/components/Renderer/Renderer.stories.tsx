@@ -1,15 +1,13 @@
 import { storybookSetupTemplate } from '@library/storybook';
 import React from 'react';
-import { RendererType } from './Renderer.types';
 import { Renderer as RendererComponent } from './Renderer';
-import { createDataState } from 'assets';
-import { PropertyEditor } from '../editor';
+import { createDataState, RendererEditorProperty } from 'assets';
 
 const template = storybookSetupTemplate((args) => {
   return <TestGroup />;
 });
 
-const props: RendererType = {
+const props = {
   id: 'ToggleButtonGroup',
   props: {
     color: 'primary',
@@ -55,8 +53,8 @@ const TestGroup = React.memo(() => {
         {...props}
         onSelected={({ properties, options }) => {
           console.log(properties, options);
-          reactive.properties = properties;
-          reactive.options = options;
+          reactive.props = properties;
+          reactive.configs = options;
         }}
       />
       <Loader />
@@ -65,13 +63,14 @@ const TestGroup = React.memo(() => {
 });
 
 const reactive = createDataState({
-  properties: null,
-  options: null,
+  props: null,
+  configs: null,
 });
 const Loader = () => {
-  const { properties, options } = reactive();
-  if (!properties || !options) return null;
-  return <PropertyEditor properties={properties} options={options} />;
+  const { props, configs } = reactive();
+
+  if (!props || configs) return null;
+  return <RendererEditorProperty props={props} configs={configs} />;
 };
 
 export const Renderer = template();
