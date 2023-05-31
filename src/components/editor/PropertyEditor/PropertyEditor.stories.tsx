@@ -1,7 +1,7 @@
 import { storybookSetupTemplate } from '@library/storybook';
 import React, { useState } from 'react';
 import { objectObserve } from '@library/presource';
-import { RendererEditorProperty, TypeLayoutRendererComponentListProperties } from 'assets';
+import { RendererEditorProperty, TypeLayoutRendererComponentListProperties } from '../../../../../../common/assets';
 
 const template = storybookSetupTemplate((args) => {
   return <TemplateComponent />;
