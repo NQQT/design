@@ -1,4 +1,4 @@
-import { TypeLayoutRendererComponent } from 'assets';
+import { TypeLayoutRendererComponent } from '@common/assets';
 
 export const toggleButtonVerticalOrientation: TypeLayoutRendererComponent = {
   id: 'ToggleButtonGroup',

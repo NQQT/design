@@ -1,7 +1,7 @@
 import { storybookSetupTemplate } from '@library/storybook';
 import React from 'react';
 import { Renderer as RendererComponent } from './Renderer';
-import { createDataState, RendererEditorProperty } from 'assets';
+import { createDataState, RendererEditorProperty } from '@common/assets';
 
 const template = storybookSetupTemplate((args) => {
   return <TestGroup />;

@@ -7,7 +7,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import { Renderer } from '../Renderer';
-import { createDataState } from 'assets';
+import { createDataState } from '@common/assets';
 
 const drawerWidth = 320;
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { layoutRenderer, rendererPresetMaterialUIComponents } from 'assets';
+import { layoutRenderer, rendererPresetMaterialUIComponents } from '@common/assets';
 
 /**
  * This component job is to simply renderer which every component in the json tree using component listing
